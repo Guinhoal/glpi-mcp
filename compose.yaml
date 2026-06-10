@@ -27,7 +27,7 @@ services:
     healthcheck:
       test:
         - CMD
-        - /app/.venv/bin/python
+        - /opt/venv/bin/python
         - -c
         - >-
           import urllib.request;
