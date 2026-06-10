@@ -10,6 +10,7 @@ database_name = os.getenv("MARIADB_DATABASE")
 database_user = os.getenv("MARIADB_USER")
 database_password = os.getenv("MARIADB_PASSWORD")
 database_timeout = int(os.getenv("MARIADB_CONNECT_TIMEOUT", "10"))
+query_timeout = float(os.getenv("MARIADB_QUERY_TIMEOUT", "10"))
 
 required_settings = {
     "MARIADB_HOST": database_host,
