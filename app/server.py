@@ -40,10 +40,19 @@ allowed_origins = [
     if item.strip()
 ]
 
+transport_security = TransportSecuritySettings(
+    enable_dns_rebinding_protection=True,
+    allowed_hosts=allowed_hosts,
+    allowed_origins=allowed_origins,
+)
+
 mcp = FastMCP(
     "GLPI MCP",
+    host=host,
+    port=port,
     stateless_http=True,
     json_response=True,
+    transport_security=transport_security,
 )
 
 SQL_IDENTIFIER_PATTERN = re.compile(r"^[A-Za-z0-9_]+$")
@@ -66,7 +75,7 @@ def server_status() -> dict[str, str]:
     """Verifica se o servidor esta funcionando."""
     return {
         "status": "ok",
-        "server_status": "glip-mcp",
+        "server_status": "glpi-mcp",
     }
 
 
@@ -471,16 +480,7 @@ async def health_check(request) -> JSONResponse:
     return JSONResponse({"status": "ok", "service": "glpi-mcp"})
 
 
-transport_security = TransportSecuritySettings(
-    enable_dns_rebinding_protection=True,
-    allowed_hosts=allowed_hosts,
-    allowed_origins=allowed_origins,
-)
-
-mcp_app = mcp.streamable_http_app(
-    host=host,
-    transport_security=transport_security,
-)
+mcp_app = mcp.streamable_http_app()
 
 protected_mcp_app = BearerAuthMiddleware(
     app=mcp_app,
