@@ -8,3 +8,12 @@ dependencies = [
     "mariadb>=1.1.14,<2",
     "mcp[cli]>=1.27.2",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

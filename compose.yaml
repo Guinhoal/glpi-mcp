@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    image: glpi-mcp:latest
+    image: glpi-mcp:0.1.0
     container_name:  glpi-mcp
     restart: unless-stopped
 
@@ -12,6 +12,14 @@ services:
       MCP_HOST: "0.0.0.0"
       MCP_PORT: "8000"
       MCP_BEARER_TOKEN: "${MCP_BEARER_TOKEN}"
+
+      MARIADB_HOST: "${MARIADB_HOST}"
+      MARIADB_PORT: "${MARIADB_PORT:-3306}"
+      MARIADB_DATABASE: "${MARIADB_DATABASE}"
+      MARIADB_USER: "${MARIADB_USER}"
+      MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
+      MARIADB_CONNECT_TIMEOUT: "${MARIADB_CONNECT_TIMEOUT:-10}"
+      MARIADB_QUERY_TIMEOUT: "${MARIADB_QUERY_TIMEOUT:-10}"
 
     ports:
       - "18274:8000"

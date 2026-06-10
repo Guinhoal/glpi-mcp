@@ -11,11 +11,18 @@ WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
 
-RUN uv sync --locked --no-dev --no-install-project
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        libmariadb3 \
+        libmariadb-dev \
+        gcc \
+        pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY app ./app 
 
-RUN useradd --create-home --uid 10001 appuser
+RUN useradd --create-home --uid 10001 appuser \
+    && chown --recursive appuser:appuser /app
 
 USER appuser 
 
