@@ -6,6 +6,7 @@ from time import perf_counter
 import mariadb
 import uvicorn
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
@@ -20,6 +21,24 @@ bearer_token = os.getenv("MCP_BEARER_TOKEN")
 
 if not bearer_token:
     raise ValueError("MCP_BEARER_TOKEN não foi definido")
+
+allowed_hosts = [
+    item.strip()
+    for item in os.getenv(
+        "MCP_ALLOWED_HOSTS",
+        "127.0.0.1:8000,localhost:8000",
+    ).split(",")
+    if item.strip()
+]
+
+allowed_origins = [
+    item.strip()
+    for item in os.getenv(
+        "MCP_ALLOWED_ORIGINS",
+        "http://127.0.0.1:6274,http://localhost:6274",
+    ).split(",")
+    if item.strip()
+]
 
 mcp = FastMCP(
     "GLPI MCP",
@@ -452,7 +471,16 @@ async def health_check(request) -> JSONResponse:
     return JSONResponse({"status": "ok", "service": "glpi-mcp"})
 
 
-mcp_app = mcp.streamable_http_app()
+transport_security = TransportSecuritySettings(
+    enable_dns_rebinding_protection=True,
+    allowed_hosts=allowed_hosts,
+    allowed_origins=allowed_origins,
+)
+
+mcp_app = mcp.streamable_http_app(
+    host=host,
+    transport_security=transport_security,
+)
 
 protected_mcp_app = BearerAuthMiddleware(
     app=mcp_app,
