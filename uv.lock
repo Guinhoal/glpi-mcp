@@ -138,11 +138,15 @@ name = "glpi-mcp"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "mariadb" },
     { name = "mcp", extra = ["cli"] },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "mcp", extras = ["cli"], specifier = ">=1.27.2" }]
+requires-dist = [
+    { name = "mariadb", specifier = ">=1.1.14,<2" },
+    { name = "mcp", extras = ["cli"], specifier = ">=1.27.2" },
+]
 
 [[package]]
 name = "h11"
@@ -227,6 +231,19 @@ wheels = [
 ]
 
 [[package]]
+name = "mariadb"
+version = "1.1.14"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c4/ba/cedef19833be88e07bfff11964441cda8a998f1628dd3b2fa3e7751d36e0/mariadb-1.1.14.tar.gz", hash = "sha256:e6d702a53eccf20922e47f2f45cfb5c7a0c2c6c0a46e4ee2d8a80d0ff4a52f34", size = 111715, upload-time = "2025-10-07T06:45:48.017Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f3/42/51130048bcce038bb859978250515f1aad90e9c4d273630a704e0a8b1ae1/mariadb-1.1.14-cp313-cp313-win32.whl", hash = "sha256:3d2c795cde606f4e12c0d73282b062433f414cae035675b0d81f2d65c9b79ac5", size = 185221, upload-time = "2025-10-07T06:45:37.848Z" },
+    { url = "https://files.pythonhosted.org/packages/af/23/e952a7e442913abd8079cd27b80b69474895c93b3727fad41c7642a80c62/mariadb-1.1.14-cp313-cp313-win_amd64.whl", hash = "sha256:7fd603c5cf23c47ef0d28fdc2b4b79919ee7f75d00ed070d3cd1054dcf816aeb", size = 202121, upload-time = "2025-10-07T06:45:39.453Z" },
+]
+
+[[package]]
 name = "markdown-it-py"
 version = "4.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -276,6 +293,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
+]
+
+[[package]]
+name = "packaging"
+version = "26.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
 ]
 
 [[package]]
