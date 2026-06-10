@@ -1,0 +1,36 @@
+services:
+  glpi-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: glpi-mcp:latest
+    container_name:  glpi-mcp
+    restart: unless-stopped
+
+    environment:
+      MCP_HOST: "0.0.0.0"
+      MCP_PORT: "8000"
+      MCP_BEARER_TOKEN: "${MCP_BEARER_TOKEN}"
+
+    ports:
+      - "18274:8000"
+
+    healthcheck:
+      test:
+      [
+        "CMD",
+        "/app/.venv/bin/python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"  
+      ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start-period: 10s
+
+    security_opt:
+      - no-new-privileges:true
+    
+    cap_drop:
+      - ALL
