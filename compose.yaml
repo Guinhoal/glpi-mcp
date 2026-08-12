@@ -3,18 +3,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
     image: glpi-mcp:0.1.0
     container_name: glpi-mcp
     restart: unless-stopped
-
     environment:
       MCP_HOST: "0.0.0.0"
       MCP_PORT: "8000"
       MCP_BEARER_TOKEN: "${MCP_BEARER_TOKEN}"
       MCP_ALLOWED_HOSTS: "${MCP_ALLOWED_HOSTS}"
       MCP_ALLOWED_ORIGINS: "${MCP_ALLOWED_ORIGINS:-http://127.0.0.1:6274,http://localhost:6274}"
-
       MARIADB_HOST: "${MARIADB_HOST}"
       MARIADB_PORT: "${MARIADB_PORT:-3306}"
       MARIADB_DATABASE: "${MARIADB_DATABASE}"
@@ -22,10 +19,8 @@ services:
       MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
       MARIADB_CONNECT_TIMEOUT: "${MARIADB_CONNECT_TIMEOUT:-10}"
       MARIADB_QUERY_TIMEOUT: "${MARIADB_QUERY_TIMEOUT:-10}"
-
     ports:
       - "18274:8000"
-
     healthcheck:
       test:
         - CMD
@@ -40,23 +35,21 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
     security_opt:
       - no-new-privileges:true
-
     cap_drop:
       - ALL
     networks:
       - mcp-net
 
   ngrok:
-    image: ngrok/latest
+    image: ngrok/ngrok:latest
     container_name: ngrok-mcp
     restart: unless-stopped
     depends_on:
       - glpi-mcp
     environment:
-      NGROK_AUTH_TOKEN: "${NGROK_AUTH_TOKEN}"
+      NGROK_AUTHTOKEN: "${NGROK_AUTHTOKEN}"
     command:
       - "http"
       - "glpi-mcp:8000"
@@ -64,6 +57,6 @@ services:
     networks:
       - mcp-net
 
-  networks:
-    mcp-net:
-      driver: bridge
+networks:
+  mcp-net:
+    driver: bridge
