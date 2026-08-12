@@ -46,3 +46,24 @@ services:
 
     cap_drop:
       - ALL
+    networks:
+      - mcp-net
+
+  ngrok:
+    image: ngrok/latest
+    container_name: ngrok-mcp
+    restart: unless-stopped
+    depends_on:
+      - glpi-mcp
+    environment:
+      NGROK_AUTH_TOKEN: "${NGROK_AUTH_TOKEN}"
+    command:
+      - "http"
+      - "glpi-mcp:8000"
+      - "--url=https://mcp-glpi.internal"
+    networks:
+      - mcp-net
+
+  networks:
+    mcp-net:
+      driver: bridge
