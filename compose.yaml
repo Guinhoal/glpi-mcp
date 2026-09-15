@@ -19,8 +19,6 @@ services:
       MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
       MARIADB_CONNECT_TIMEOUT: "${MARIADB_CONNECT_TIMEOUT:-10}"
       MARIADB_QUERY_TIMEOUT: "${MARIADB_QUERY_TIMEOUT:-10}"
-    ports:
-      - "18274:8000"
     healthcheck:
       test:
         - CMD
@@ -28,9 +26,7 @@ services:
         - -c
         - >-
           import urllib.request;
-          urllib.request.urlopen(
-          'http://127.0.0.1:8000/health',
-          timeout=3)
+          urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)
       interval: 30s
       timeout: 5s
       retries: 3
@@ -40,23 +36,8 @@ services:
     cap_drop:
       - ALL
     networks:
-      - mcp-net
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: ngrok-mcp
-    restart: unless-stopped
-    depends_on:
-      - glpi-mcp
-    environment:
-      NGROK_AUTHTOKEN: "${NGROK_AUTHTOKEN}"
-    command:
-      - "http"
-      - "glpi-mcp:8000"
-      - "--url=https://mcp-glpi.internal"
-    networks:
-      - mcp-net
+      - mcp-gateway-net
 
 networks:
-  mcp-net:
-    driver: bridge
+  mcp-gateway-net:
+    external: true
