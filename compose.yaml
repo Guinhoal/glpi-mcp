@@ -43,6 +43,9 @@ services:
       retries: 3
       start_period: 10s
 
+    ports:
+      - "192.168.100.44:18274:8000"
+
     networks:
       - mcp-gateway-net
 
