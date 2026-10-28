@@ -44,7 +44,7 @@ services:
       start_period: 10s
 
     ports:
-      - "192.168.100.44:18274:8000"
+      - "${MCP_BIND_IP:-192.168.100.44}:18274:8000"
 
     networks:
       - mcp-gateway-net
